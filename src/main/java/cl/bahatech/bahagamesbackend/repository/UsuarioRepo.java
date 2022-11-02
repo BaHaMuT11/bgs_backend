@@ -22,10 +22,8 @@ public class UsuarioRepo {
 
         try {
             Connection conn = jdbcTemplate.getDataSource().getConnection();
-            //conn.setAutoCommit(false); Debe quedar asī para postgre en lectura de datos
 
             CallableStatement st = conn.prepareCall("CALL " + Constante.SP_AGREGAR_USUARIO + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            //Call sin curly braces para postgre
 
             st.setString(1, usuario.getNombre());
             st.setString(2, usuario.getUsuario());
@@ -59,10 +57,10 @@ public class UsuarioRepo {
 
             try {
                 Connection conn = jdbcTemplate.getDataSource().getConnection();
-                conn.setAutoCommit(false); //Debe quedar asī para postgre
+                conn.setAutoCommit(false);
 
                 CallableStatement st = conn.prepareCall("CALL " + Constante.SP_OBTENER_USUARIO_USERNAME + "(?,?)");
-                //Call sin curly braces para postgre
+
                 st.setString(1, username);
                 st.registerOutParameter(2, Types.REF_CURSOR);
 
@@ -73,15 +71,12 @@ public class UsuarioRepo {
                 while (rs.next()) {
                     usuario = new Usuario();
 
-                    //usuario.setId(rs.getLong("id"));
-                    //usuario.setNombre(rs.getString("nombre"));
                     usuario.setPass(rs.getString("pass"));
                     usuario.setUsuario(rs.getString("usuario"));
-                    //usuario.setFechaCreacion(rs.getString("fecha_creacion"));
+
                 }
 
                 conn.close();
-                System.out.println(usuario);
 
                 return usuario;
 
