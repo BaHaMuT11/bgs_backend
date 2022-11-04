@@ -3,10 +3,12 @@ package cl.bahatech.bahagamesbackend.controller;
 
 import cl.bahatech.bahagamesbackend.model.request.AgregarUsuarioRequest;
 import cl.bahatech.bahagamesbackend.model.response.AgregarUsuarioResponse;
+import cl.bahatech.bahagamesbackend.model.response.BuscarUsuarioLoginResponse;
 import cl.bahatech.bahagamesbackend.model.security.JwtRequest;
 import cl.bahatech.bahagamesbackend.model.security.JwtResponse;
 import cl.bahatech.bahagamesbackend.security.JwtTokenUtil;
 import cl.bahatech.bahagamesbackend.service.UsuarioService;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +18,8 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Objects;
 
 @RestController
@@ -66,5 +67,17 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
+    }
+
+    @GetMapping("/usuario/{login}")
+    @ApiOperation( value = "Obtiene un usuario provisto el login",
+            notes = "Enviar por parámetros una login de usuario que exista",
+            response = BuscarUsuarioLoginResponse.class)
+    public ResponseEntity<BuscarUsuarioLoginResponse> obtenerDRMPorId(@PathVariable String login) {
+
+        BuscarUsuarioLoginResponse resp = sUsuario.buscarUsuarioLogin(login);
+        log.debug("Resultado de respuesta: {} ", resp);
+        return ResponseEntity.ok(resp);
+
     }
 }

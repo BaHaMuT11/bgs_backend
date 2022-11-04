@@ -85,4 +85,53 @@ public class UsuarioRepo {
             }
 
     }
+
+    public Usuario buscarUsuarioPorUsername(String username) {
+
+        Usuario usuario = null;
+
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+            conn.setAutoCommit(false);
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_BUSCAR_USUARIO_USERNAME + "(?,?)");
+
+            st.setString(1, username);
+            st.registerOutParameter(2, Types.REF_CURSOR);
+
+            st.execute();
+
+            ResultSet rs = (ResultSet) st.getObject(2);
+
+            while (rs.next()) {
+                usuario = new Usuario();
+
+                usuario.setId(Long.parseLong(rs.getString("id")));
+                usuario.setUsuario(rs.getString("usuario"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setFechaNacimiento(rs.getString("fecha_nacimiento"));
+                usuario.setEdad(Integer.parseInt(rs.getString("edad")));
+                usuario.setRut(rs.getString("rut"));
+                usuario.setFono(rs.getString("fono"));
+                usuario.setCalle(rs.getString("calle"));
+                usuario.setNumero(rs.getString("numero"));
+                usuario.setCasa(rs.getString("casa"));
+                usuario.setRegion(rs.getString("region"));
+                usuario.setComuna(rs.getString("comuna"));
+                usuario.setCorreo(rs.getString("correo"));
+                usuario.setEstado(rs.getString("estado"));
+                usuario.setFechaCreacion(rs.getString("fecha_creacion"));
+                usuario.setImagen(rs.getString("imagen"));
+
+            }
+
+            conn.close();
+
+            return usuario;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+
+    }
 }
