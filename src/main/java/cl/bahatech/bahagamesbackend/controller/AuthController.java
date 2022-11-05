@@ -2,8 +2,12 @@ package cl.bahatech.bahagamesbackend.controller;
 
 
 import cl.bahatech.bahagamesbackend.model.request.AgregarUsuarioRequest;
+import cl.bahatech.bahagamesbackend.model.request.ModificarCredencialesRequest;
+import cl.bahatech.bahagamesbackend.model.request.ModificarUsuarioRequest;
 import cl.bahatech.bahagamesbackend.model.response.AgregarUsuarioResponse;
 import cl.bahatech.bahagamesbackend.model.response.BuscarUsuarioLoginResponse;
+import cl.bahatech.bahagamesbackend.model.response.ModificarCredencialesResponse;
+import cl.bahatech.bahagamesbackend.model.response.ModificarUsuarioResponse;
 import cl.bahatech.bahagamesbackend.model.security.JwtRequest;
 import cl.bahatech.bahagamesbackend.model.security.JwtResponse;
 import cl.bahatech.bahagamesbackend.security.JwtTokenUtil;
@@ -79,5 +83,25 @@ public class AuthController {
         log.debug("Resultado de respuesta: {} ", resp);
         return ResponseEntity.ok(resp);
 
+    }
+
+    @PutMapping("/usuario/modificar")
+    @ApiOperation( value = "Modifica info de un usuario",
+            notes = "Se debe proporcionar info del usuario como JSON",
+            response = ModificarUsuarioResponse.class)
+    public ResponseEntity<ModificarUsuarioResponse> modificarUsuario(@RequestBody ModificarUsuarioRequest usu) {
+        ModificarUsuarioResponse resp = sUsuario.modificarUsuario(usu);
+        log.debug("Resulado de respuesta: {}", resp);
+        return ResponseEntity.ok(resp);
+    }
+
+    @PutMapping("/udata/modificar")
+    @ApiOperation( value = "Modifica credenciales de un usuario",
+            notes = "Se debe proporcionar info de las credenciales como JSON",
+            response = ModificarCredencialesResponse.class)
+    public ResponseEntity<ModificarCredencialesResponse> modificarUsuario(@RequestBody ModificarCredencialesRequest creds) {
+        ModificarCredencialesResponse resp = sUsuario.modificarCredenciales(creds);
+        log.debug("Resulado de respuesta: {}", resp);
+        return ResponseEntity.ok(resp);
     }
 }

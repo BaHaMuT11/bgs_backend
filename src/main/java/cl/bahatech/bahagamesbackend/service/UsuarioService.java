@@ -2,8 +2,12 @@ package cl.bahatech.bahagamesbackend.service;
 
 import cl.bahatech.bahagamesbackend.model.Usuario;
 import cl.bahatech.bahagamesbackend.model.request.AgregarUsuarioRequest;
+import cl.bahatech.bahagamesbackend.model.request.ModificarCredencialesRequest;
+import cl.bahatech.bahagamesbackend.model.request.ModificarUsuarioRequest;
 import cl.bahatech.bahagamesbackend.model.response.AgregarUsuarioResponse;
 import cl.bahatech.bahagamesbackend.model.response.BuscarUsuarioLoginResponse;
+import cl.bahatech.bahagamesbackend.model.response.ModificarCredencialesResponse;
+import cl.bahatech.bahagamesbackend.model.response.ModificarUsuarioResponse;
 import cl.bahatech.bahagamesbackend.repository.UsuarioRepo;
 import cl.bahatech.bahagamesbackend.util.CustomRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +39,15 @@ public class UsuarioService {
 
 
         return resp;
+    }
+
+    public ModificarUsuarioResponse modificarUsuario(ModificarUsuarioRequest usuario) {
+        boolean resultado = repo.modificarUsuario(usuario);
+        return new ModificarUsuarioResponse();
+    }
+
+    public ModificarCredencialesResponse modificarCredenciales(ModificarCredencialesRequest req) {
+        boolean resultado = repo.modificarCredenciales(req);
+        return new ModificarCredencialesResponse();
     }
 }

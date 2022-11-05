@@ -2,6 +2,8 @@ package cl.bahatech.bahagamesbackend.repository;
 
 import cl.bahatech.bahagamesbackend.model.Usuario;
 import cl.bahatech.bahagamesbackend.model.request.AgregarUsuarioRequest;
+import cl.bahatech.bahagamesbackend.model.request.ModificarCredencialesRequest;
+import cl.bahatech.bahagamesbackend.model.request.ModificarUsuarioRequest;
 import cl.bahatech.bahagamesbackend.util.Constante;
 import cl.bahatech.bahagamesbackend.util.CustomRuntimeException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -133,5 +135,56 @@ public class UsuarioRepo {
             throw new CustomRuntimeException(e);
         }
 
+    }
+
+    public boolean modificarUsuario(ModificarUsuarioRequest usu) {
+
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_MODIFICAR_USUARIO + "(?,?,?,?,?,?,?,?,?,?,?,?)");
+
+            st.setString(1,  usu.getLogin());
+            st.setString(2,  usu.getImagen());
+            st.setString(3,  usu.getNombre());
+            st.setString(4,  usu.getFechaNacimiento());
+            st.setString(5,  usu.getRut());
+            st.setString(6,  usu.getFono());
+            st.setString(7,  usu.getCalle());
+            st.setString(8,  usu.getNumero());
+            st.setString(9,  usu.getCasa());
+            st.setString(10, usu.getRegion());
+            st.setString(11, usu.getComuna());
+            st.setInt(12, usu.getEdad());
+
+            st.execute();
+            conn.close();
+
+            return true;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
+
+    public boolean modificarCredenciales(ModificarCredencialesRequest creds) {
+
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_MODIFICAR_CREDENCIALES + "(?,?,?)");
+
+            st.setString(1,  creds.getLogin());
+            st.setString(2,  creds.getCorreo());
+            st.setString(3,  encoder.encode(creds.getPass()));
+
+            st.execute();
+            conn.close();
+
+            return true;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
     }
 }
