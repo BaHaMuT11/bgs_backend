@@ -174,10 +174,11 @@ public class UsuarioRepo {
 
             CallableStatement st = conn.prepareCall("CALL " + Constante.SP_MODIFICAR_CREDENCIALES + "(?,?,?)");
 
+
             st.setString(1,  creds.getLogin());
             st.setString(2,  creds.getCorreo());
-            st.setString(3,  encoder.encode(creds.getPass()));
-
+            st.setString(3,  creds.getPass().equals("") ? "" : encoder.encode(creds.getPass()));
+            
             st.execute();
             conn.close();
 
