@@ -178,7 +178,7 @@ public class UsuarioRepo {
             st.setString(1,  creds.getLogin());
             st.setString(2,  creds.getCorreo());
             st.setString(3,  creds.getPass().equals("") ? "" : encoder.encode(creds.getPass()));
-            
+
             st.execute();
             conn.close();
 
