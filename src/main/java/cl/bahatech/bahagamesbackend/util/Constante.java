@@ -12,5 +12,6 @@ public final class Constante {
     //Publicaciones
     public static final String SP_AGREGAR_PUBLICACION = "baha_games_store.sp_agregar_publicacion";
     public static final String SP_OBTENER_PUBLICACIONES = "baha_games_store.sp_obtener_publicaciones";
+    public static final String SP_DESHABILITAR_PUBLICACION = "baha_games_store.sp_deshabilitar_publicacion";
 
 }

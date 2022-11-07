@@ -2,6 +2,7 @@ package cl.bahatech.bahagamesbackend.repository;
 
 import cl.bahatech.bahagamesbackend.model.Publicacion;
 import cl.bahatech.bahagamesbackend.model.request.AgregarPublicacionRequest;
+import cl.bahatech.bahagamesbackend.model.request.DeshabilitarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.util.Constante;
 import cl.bahatech.bahagamesbackend.util.CustomRuntimeException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -83,6 +84,26 @@ public class PublicacionRepo {
             conn.close();
 
             return publicaciones;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
+
+
+    public boolean deshabilitarPublicacion(DeshabilitarPublicacionRequest req) {
+
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_DESHABILITAR_PUBLICACION + "(?)");
+
+            st.setLong(1, req.getId());
+
+            st.execute();
+            conn.close();
+
+            return true;
 
         } catch (SQLException e) {
             throw new CustomRuntimeException(e);
