@@ -14,4 +14,5 @@ public class Publicacion {
     private String imagen;
     private String estado;
     private String fechaCreacion;
+    private Integer rating;
 }
