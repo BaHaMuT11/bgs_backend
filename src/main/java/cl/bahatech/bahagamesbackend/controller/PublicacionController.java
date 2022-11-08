@@ -1,7 +1,9 @@
 package cl.bahatech.bahagamesbackend.controller;
 
+import cl.bahatech.bahagamesbackend.model.request.AgregarCalificacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.AgregarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.DeshabilitarPublicacionRequest;
+import cl.bahatech.bahagamesbackend.model.response.AgregarCalificacionResponse;
 import cl.bahatech.bahagamesbackend.model.response.AgregarPublicacionResponse;
 import cl.bahatech.bahagamesbackend.model.response.DeshabilitarPublicacionResponse;
 import cl.bahatech.bahagamesbackend.model.response.ObtenerPublicacionesResponse;
@@ -45,6 +47,20 @@ public class PublicacionController {
             response = DeshabilitarPublicacionResponse.class)
     public ResponseEntity<DeshabilitarPublicacionResponse> deshabilitar(@RequestBody DeshabilitarPublicacionRequest reqId) {
         DeshabilitarPublicacionResponse resp = servicio.deshabilitarPublicacion(reqId);
+        log.debug("Resulado de respuesta: {}", resp);
+        return ResponseEntity.ok(resp);
+    }
+
+
+    @PostMapping("/publicacion/calificar")
+    @ApiOperation( value = "Califica una publicación",
+            notes = "Se debe proporcionar el id de usuario que califica, el id de publicación y la calificación, " +
+                    "como JSON",
+            response = AgregarCalificacionResponse.class)
+    public ResponseEntity<AgregarCalificacionResponse> calificarPublicacion(
+            @RequestBody AgregarCalificacionRequest req) {
+
+        AgregarCalificacionResponse resp = servicio.calificarPublicacion(req);
         log.debug("Resulado de respuesta: {}", resp);
         return ResponseEntity.ok(resp);
     }

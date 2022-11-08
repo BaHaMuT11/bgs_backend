@@ -1,7 +1,9 @@
 package cl.bahatech.bahagamesbackend.service;
 
+import cl.bahatech.bahagamesbackend.model.request.AgregarCalificacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.AgregarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.DeshabilitarPublicacionRequest;
+import cl.bahatech.bahagamesbackend.model.response.AgregarCalificacionResponse;
 import cl.bahatech.bahagamesbackend.model.response.AgregarPublicacionResponse;
 import cl.bahatech.bahagamesbackend.model.response.DeshabilitarPublicacionResponse;
 import cl.bahatech.bahagamesbackend.model.response.ObtenerPublicacionesResponse;
@@ -31,5 +33,10 @@ public class PublicacionService {
     public DeshabilitarPublicacionResponse deshabilitarPublicacion(DeshabilitarPublicacionRequest req) {
         boolean resultado = repo.deshabilitarPublicacion(req);
         return new DeshabilitarPublicacionResponse();
+    }
+
+    public AgregarCalificacionResponse calificarPublicacion (AgregarCalificacionRequest req) {
+        boolean resultado = repo.calificarPublicacion(req);
+        return new AgregarCalificacionResponse();
     }
 }

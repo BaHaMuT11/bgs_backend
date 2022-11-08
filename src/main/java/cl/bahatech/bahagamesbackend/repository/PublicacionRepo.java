@@ -1,6 +1,7 @@
 package cl.bahatech.bahagamesbackend.repository;
 
 import cl.bahatech.bahagamesbackend.model.Publicacion;
+import cl.bahatech.bahagamesbackend.model.request.AgregarCalificacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.AgregarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.DeshabilitarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.util.Constante;
@@ -101,6 +102,30 @@ public class PublicacionRepo {
             st.setLong(1, req.getId());
 
             st.execute();
+            conn.close();
+
+            return true;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
+
+
+    public boolean calificarPublicacion(AgregarCalificacionRequest req) {
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+            //conn.setAutoCommit(false); Debe quedar asī para postgre en lectura de datos
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_AGREGAR_CALIFICACION + "(?,?,?)");
+            //Call sin curly braces para postgre
+
+            st.setLong(1, req.getUsuario());
+            st.setLong(2, req.getPublicacion());
+            st.setInt( 3, req.getEstrellas());
+
+            st.execute();
+
             conn.close();
 
             return true;
