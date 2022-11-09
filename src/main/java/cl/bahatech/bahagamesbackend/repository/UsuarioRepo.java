@@ -224,6 +224,7 @@ public class UsuarioRepo {
                 usuario.setEstado(rs.getString("estado"));
                 usuario.setFechaCreacion(rs.getString("fecha_creacion"));
                 usuario.setImagen(rs.getString("imagen"));
+                usuario.setSellerRating(rs.getInt("seller_rating"));
 
             }
 

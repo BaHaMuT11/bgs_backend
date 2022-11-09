@@ -21,4 +21,5 @@ public class Usuario {
     private String estado;
     private String fechaCreacion;
     private String imagen;
+    private Integer sellerRating;
 }
