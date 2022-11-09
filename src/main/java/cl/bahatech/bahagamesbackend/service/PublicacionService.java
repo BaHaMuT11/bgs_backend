@@ -3,10 +3,7 @@ package cl.bahatech.bahagamesbackend.service;
 import cl.bahatech.bahagamesbackend.model.request.AgregarCalificacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.AgregarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.DeshabilitarPublicacionRequest;
-import cl.bahatech.bahagamesbackend.model.response.AgregarCalificacionResponse;
-import cl.bahatech.bahagamesbackend.model.response.AgregarPublicacionResponse;
-import cl.bahatech.bahagamesbackend.model.response.DeshabilitarPublicacionResponse;
-import cl.bahatech.bahagamesbackend.model.response.ObtenerPublicacionesResponse;
+import cl.bahatech.bahagamesbackend.model.response.*;
 import cl.bahatech.bahagamesbackend.repository.PublicacionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,5 +35,12 @@ public class PublicacionService {
     public AgregarCalificacionResponse calificarPublicacion (AgregarCalificacionRequest req) {
         boolean resultado = repo.calificarPublicacion(req);
         return new AgregarCalificacionResponse();
+    }
+
+    public ObtenerPublicacionIdResponse obtenerPublicacionPorId(Long id) {
+        ObtenerPublicacionIdResponse resp = new ObtenerPublicacionIdResponse();
+        resp.setPublicacion(repo.obtenerPublicacion(id));
+
+        return resp;
     }
 }

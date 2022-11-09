@@ -3,10 +3,7 @@ package cl.bahatech.bahagamesbackend.controller;
 import cl.bahatech.bahagamesbackend.model.request.AgregarCalificacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.AgregarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.DeshabilitarPublicacionRequest;
-import cl.bahatech.bahagamesbackend.model.response.AgregarCalificacionResponse;
-import cl.bahatech.bahagamesbackend.model.response.AgregarPublicacionResponse;
-import cl.bahatech.bahagamesbackend.model.response.DeshabilitarPublicacionResponse;
-import cl.bahatech.bahagamesbackend.model.response.ObtenerPublicacionesResponse;
+import cl.bahatech.bahagamesbackend.model.response.*;
 import cl.bahatech.bahagamesbackend.service.PublicacionService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -64,4 +61,18 @@ public class PublicacionController {
         log.debug("Resulado de respuesta: {}", resp);
         return ResponseEntity.ok(resp);
     }
+
+
+    @GetMapping("/publicacion/get/{id}")
+    @ApiOperation( value = "Obtiene una publicación provisto el id",
+            notes = "Enviar por parámetros una ID de publicación que exista",
+            response = ObtenerPublicacionIdResponse.class)
+    public ResponseEntity<ObtenerPublicacionIdResponse> obtenerPublicacionPorId(@PathVariable Long id) {
+
+        ObtenerPublicacionIdResponse resp = servicio.obtenerPublicacionPorId(id);
+        log.debug("Resultado de respuesta: {} ", resp);
+        return ResponseEntity.ok(resp);
+
+    }
+
 }

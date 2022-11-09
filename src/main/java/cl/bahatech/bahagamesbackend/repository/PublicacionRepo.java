@@ -91,7 +91,6 @@ public class PublicacionRepo {
         }
     }
 
-
     public boolean deshabilitarPublicacion(DeshabilitarPublicacionRequest req) {
 
         try {
@@ -111,7 +110,6 @@ public class PublicacionRepo {
         }
     }
 
-
     public boolean calificarPublicacion(AgregarCalificacionRequest req) {
         try {
             Connection conn = jdbcTemplate.getDataSource().getConnection();
@@ -129,6 +127,47 @@ public class PublicacionRepo {
             conn.close();
 
             return true;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
+
+    public Publicacion obtenerPublicacion(Long id) {
+
+        Publicacion publicacion = null;
+
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+            conn.setAutoCommit(false); //Debe quedar asī para postgre
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_OBTENER_PUBLICACION_ID + "(?,?)");
+            //Call sin curly braces para postgre
+            st.setLong(1, id);
+            st.registerOutParameter(2, Types.REF_CURSOR);
+            st.execute();
+
+            ResultSet rs = (ResultSet) st.getObject(2);
+
+            while (rs.next()) {
+                publicacion = new Publicacion();
+
+                publicacion.setId(rs.getLong("id"));
+                publicacion.setUsuario(rs.getLong("usuario"));
+                publicacion.setJuego(rs.getString("juego"));
+                publicacion.setDescripcion(rs.getString("descripcion"));
+                publicacion.setPrecio(rs.getInt("precio"));
+                publicacion.setPlataforma(rs.getString("plataforma"));
+                publicacion.setFormato(rs.getString("formato"));
+                publicacion.setImagen(rs.getString("imagen"));
+                publicacion.setEstado(rs.getString("estado"));
+                publicacion.setFechaCreacion(rs.getString("fecha_creacion"));
+                publicacion.setRating(rs.getInt("rating"));
+            }
+
+            conn.close();
+
+            return publicacion;
 
         } catch (SQLException e) {
             throw new CustomRuntimeException(e);
