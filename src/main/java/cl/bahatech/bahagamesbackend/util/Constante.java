@@ -15,4 +15,5 @@ public final class Constante {
     public static final String SP_DESHABILITAR_PUBLICACION = "baha_games_store.sp_deshabilitar_publicacion";
     public static final String SP_AGREGAR_CALIFICACION = "baha_games_store.sp_valorar_publicaicon";
     public static final String SP_OBTENER_PUBLICACION_ID = "baha_games_store.sp_obtener_publicaciones_id";
+    public static final String SP_BUSCAR_USUARIO_ID = "baha_games_store.sp_obtener_usuario_id";
 }

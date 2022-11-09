@@ -4,10 +4,7 @@ import cl.bahatech.bahagamesbackend.model.Usuario;
 import cl.bahatech.bahagamesbackend.model.request.AgregarUsuarioRequest;
 import cl.bahatech.bahagamesbackend.model.request.ModificarCredencialesRequest;
 import cl.bahatech.bahagamesbackend.model.request.ModificarUsuarioRequest;
-import cl.bahatech.bahagamesbackend.model.response.AgregarUsuarioResponse;
-import cl.bahatech.bahagamesbackend.model.response.BuscarUsuarioLoginResponse;
-import cl.bahatech.bahagamesbackend.model.response.ModificarCredencialesResponse;
-import cl.bahatech.bahagamesbackend.model.response.ModificarUsuarioResponse;
+import cl.bahatech.bahagamesbackend.model.response.*;
 import cl.bahatech.bahagamesbackend.repository.UsuarioRepo;
 import cl.bahatech.bahagamesbackend.util.CustomRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +28,7 @@ public class UsuarioService {
         Usuario usu = repo.buscarUsuarioPorUsername(user);
 
         if (usu != null) {
-            resp.setUsuario(repo.buscarUsuarioPorUsername(user));
+            resp.setUsuario(usu);
         }
         else {
             throw new CustomRuntimeException("Usuario no encontrado");
@@ -49,5 +46,21 @@ public class UsuarioService {
     public ModificarCredencialesResponse modificarCredenciales(ModificarCredencialesRequest req) {
         boolean resultado = repo.modificarCredenciales(req);
         return new ModificarCredencialesResponse();
+    }
+
+    public BuscarUsuarioIdResponse buscarUsuarioId(Long id) {
+        BuscarUsuarioIdResponse resp = new BuscarUsuarioIdResponse();
+
+        Usuario usu = repo.buscarUsuarioPorId(id);
+
+        if (usu != null) {
+            resp.setUsuario(usu);
+        }
+        else {
+            throw new CustomRuntimeException("Usuario no encontrado");
+        }
+
+
+        return resp;
     }
 }

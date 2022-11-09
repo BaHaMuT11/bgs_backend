@@ -4,10 +4,7 @@ package cl.bahatech.bahagamesbackend.controller;
 import cl.bahatech.bahagamesbackend.model.request.AgregarUsuarioRequest;
 import cl.bahatech.bahagamesbackend.model.request.ModificarCredencialesRequest;
 import cl.bahatech.bahagamesbackend.model.request.ModificarUsuarioRequest;
-import cl.bahatech.bahagamesbackend.model.response.AgregarUsuarioResponse;
-import cl.bahatech.bahagamesbackend.model.response.BuscarUsuarioLoginResponse;
-import cl.bahatech.bahagamesbackend.model.response.ModificarCredencialesResponse;
-import cl.bahatech.bahagamesbackend.model.response.ModificarUsuarioResponse;
+import cl.bahatech.bahagamesbackend.model.response.*;
 import cl.bahatech.bahagamesbackend.model.security.JwtRequest;
 import cl.bahatech.bahagamesbackend.model.security.JwtResponse;
 import cl.bahatech.bahagamesbackend.security.JwtTokenUtil;
@@ -77,7 +74,7 @@ public class AuthController {
     @ApiOperation( value = "Obtiene un usuario provisto el login",
             notes = "Enviar por parámetros una login de usuario que exista",
             response = BuscarUsuarioLoginResponse.class)
-    public ResponseEntity<BuscarUsuarioLoginResponse> obtenerDRMPorId(@PathVariable String login) {
+    public ResponseEntity<BuscarUsuarioLoginResponse> obtenerUsuarioPorLogin(@PathVariable String login) {
 
         BuscarUsuarioLoginResponse resp = sUsuario.buscarUsuarioLogin(login);
         log.debug("Resultado de respuesta: {} ", resp);
@@ -103,5 +100,17 @@ public class AuthController {
         ModificarCredencialesResponse resp = sUsuario.modificarCredenciales(creds);
         log.debug("Resulado de respuesta: {}", resp);
         return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping("/usuariof/{id}")
+    @ApiOperation( value = "Obtiene un usuario provisto el id",
+            notes = "Enviar por parámetros un id de usuario que exista",
+            response = BuscarUsuarioIdResponse.class)
+    public ResponseEntity<BuscarUsuarioIdResponse> obtenerUsuarioPorId(@PathVariable Long id) {
+
+        BuscarUsuarioIdResponse resp = sUsuario.buscarUsuarioId(id);
+        log.debug("Resultado de respuesta: {} ", resp);
+        return ResponseEntity.ok(resp);
+
     }
 }

@@ -1,10 +1,12 @@
 package cl.bahatech.bahagamesbackend.service;
 
+import cl.bahatech.bahagamesbackend.model.Publicacion;
 import cl.bahatech.bahagamesbackend.model.request.AgregarCalificacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.AgregarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.DeshabilitarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.model.response.*;
 import cl.bahatech.bahagamesbackend.repository.PublicacionRepo;
+import cl.bahatech.bahagamesbackend.util.CustomRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +41,14 @@ public class PublicacionService {
 
     public ObtenerPublicacionIdResponse obtenerPublicacionPorId(Long id) {
         ObtenerPublicacionIdResponse resp = new ObtenerPublicacionIdResponse();
-        resp.setPublicacion(repo.obtenerPublicacion(id));
+
+        Publicacion publicacion = repo.obtenerPublicacion(id);
+
+        if (publicacion != null) {
+            resp.setPublicacion(publicacion);
+        } else {
+            throw new CustomRuntimeException("Publicación no encontrada");
+        }
 
         return resp;
     }
