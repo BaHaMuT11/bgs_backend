@@ -16,4 +16,8 @@ public final class Constante {
     public static final String SP_AGREGAR_CALIFICACION = "baha_games_store.sp_valorar_publicaicon";
     public static final String SP_OBTENER_PUBLICACION_ID = "baha_games_store.sp_obtener_publicaciones_id";
     public static final String SP_BUSCAR_USUARIO_ID = "baha_games_store.sp_obtener_usuario_id";
+    public static final String SP_AGREGAR_FAVORITO = "baha_games_store.sp_agregar_favorito";
+    public static final String SP_OBTENER_FAVORITOS_USUARIO = "baha_games_store.sp_obtener_favoritos_user";
+    public static final String SP_ELIMINAR_FAVORTIO_USUARIO = "baha_games_store.sp_eliminar_favorito";
+
 }

@@ -4,6 +4,6 @@ import cl.bahatech.bahagamesbackend.util.ResponseDetail;
 import lombok.Data;
 
 @Data
-public class AgregarUsuarioResponse {
+public class AgregarFavoritoResponse {
     private ResponseDetail estado = ResponseDetail.RESPUESTA_OK;
 }

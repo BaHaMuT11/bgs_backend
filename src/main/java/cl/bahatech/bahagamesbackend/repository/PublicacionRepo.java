@@ -1,7 +1,9 @@
 package cl.bahatech.bahagamesbackend.repository;
 
+import cl.bahatech.bahagamesbackend.model.Favorito;
 import cl.bahatech.bahagamesbackend.model.Publicacion;
 import cl.bahatech.bahagamesbackend.model.request.AgregarCalificacionRequest;
+import cl.bahatech.bahagamesbackend.model.request.AgregarFavoritoRequest;
 import cl.bahatech.bahagamesbackend.model.request.AgregarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.DeshabilitarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.util.Constante;
@@ -168,6 +170,82 @@ public class PublicacionRepo {
             conn.close();
 
             return publicacion;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
+
+    public boolean agregarFavorito(AgregarFavoritoRequest req) {
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+            //conn.setAutoCommit(false); Debe quedar asī para postgre en lectura de datos
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_AGREGAR_FAVORITO+ "(?,?)");
+            //Call sin curly braces para postgre
+
+            st.setLong(1, req.getUsuario());
+            st.setLong(2, req.getPublicacion());
+
+            st.execute();
+
+            conn.close();
+
+            return true;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
+
+    public List<Favorito> obtenerFavoritosUsuario(Long id) {
+
+        List<Favorito> favoritos = new ArrayList<>();
+        Favorito favorito = null;
+
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+            conn.setAutoCommit(false); //Debe quedar asī para postgre
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_OBTENER_FAVORITOS_USUARIO + "(?,?)");
+            //Call sin curly braces para postgre
+            st.setLong(1, id);
+            st.registerOutParameter(2, Types.REF_CURSOR);
+            st.execute();
+
+            ResultSet rs = (ResultSet) st.getObject(2);
+
+            while (rs.next()) {
+                favorito = new Favorito();
+
+                favorito.setUsuario(rs.getLong("usuario"));
+                favorito.setPublicacion(rs.getLong("publicacion"));
+                favorito.setImagen(rs.getString("imagen"));
+                favorito.setJuego(rs.getString("juego"));
+
+                favoritos.add(favorito);
+            }
+
+            conn.close();
+
+            return favoritos;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
+
+    public boolean eliminarFavorito(Long usuario, Long publicacion) {
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_ELIMINAR_FAVORTIO_USUARIO + "(?,?)");
+            st.setLong(1, usuario);
+            st.setLong(2, publicacion);
+
+            st.execute();
+            conn.close();
+
+            return true;
 
         } catch (SQLException e) {
             throw new CustomRuntimeException(e);

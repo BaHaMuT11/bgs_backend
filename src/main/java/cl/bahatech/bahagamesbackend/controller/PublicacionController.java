@@ -1,11 +1,13 @@
 package cl.bahatech.bahagamesbackend.controller;
 
 import cl.bahatech.bahagamesbackend.model.request.AgregarCalificacionRequest;
+import cl.bahatech.bahagamesbackend.model.request.AgregarFavoritoRequest;
 import cl.bahatech.bahagamesbackend.model.request.AgregarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.model.request.DeshabilitarPublicacionRequest;
 import cl.bahatech.bahagamesbackend.model.response.*;
 import cl.bahatech.bahagamesbackend.service.PublicacionService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -73,6 +75,46 @@ public class PublicacionController {
         log.debug("Resultado de respuesta: {} ", resp);
         return ResponseEntity.ok(resp);
 
+    }
+
+
+    @PostMapping("/publicacion/agregar_favorito")
+    @ApiOperation( value = "Agrega a los favoritos de un usuario una publicación",
+            notes = "Se debe proporcionar el id de usuario y de publicación como JSON",
+            response = AgregarFavoritoResponse.class)
+    public ResponseEntity<AgregarFavoritoResponse> agregarFavorito(
+            @RequestBody AgregarFavoritoRequest req) {
+
+        AgregarFavoritoResponse resp = servicio.agregarFavorito(req);
+        log.debug("Resulado de respuesta: {}", resp);
+        return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping("/publicacion/favoritos/{id}")
+    @ApiOperation( value = "Obtiene los favoritos provisto el id de usuario",
+            notes = "Enviar por parámetros una ID de usuario que exista",
+            response = ObtenerFavoritosResponse.class)
+    public ResponseEntity<ObtenerFavoritosResponse> obtenerFavsPorId(@PathVariable Long id) {
+        ObtenerFavoritosResponse resp = servicio.obtenerFavsUsuario(id);
+        log.debug("Resultado de respuesta: {} ", resp);
+        return ResponseEntity.ok(resp);
+
+    }
+
+
+    @DeleteMapping("/favoritos/eliminar/{usuario}/{publicacion}")
+    @ApiOperation( value = "Elimina una publicación favorita de un usuario en el sistema",
+            notes = "Enviar por parámetros las id de usuario y publicación",
+            response = EliminarFavoritoResponse.class)
+    public ResponseEntity<EliminarFavoritoResponse> eliminarFavorito
+            (@ApiParam("ID del usuario") @PathVariable Long usuario,
+             @ApiParam("ID de la publicaciœn") @PathVariable Long publicacion) {
+
+        EliminarFavoritoResponse resp = servicio.eliminarFavorito(usuario, publicacion);
+
+        log.debug("Resulado de respuesta: {}", resp);
+
+        return ResponseEntity.ok(resp);
     }
 
 }
