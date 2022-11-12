@@ -1,9 +1,6 @@
 package cl.bahatech.bahagamesbackend.controller;
 
-import cl.bahatech.bahagamesbackend.model.request.AgregarCalificacionRequest;
-import cl.bahatech.bahagamesbackend.model.request.AgregarFavoritoRequest;
-import cl.bahatech.bahagamesbackend.model.request.AgregarPublicacionRequest;
-import cl.bahatech.bahagamesbackend.model.request.DeshabilitarPublicacionRequest;
+import cl.bahatech.bahagamesbackend.model.request.*;
 import cl.bahatech.bahagamesbackend.model.response.*;
 import cl.bahatech.bahagamesbackend.service.PublicacionService;
 import io.swagger.annotations.ApiOperation;
@@ -115,6 +112,28 @@ public class PublicacionController {
         log.debug("Resulado de respuesta: {}", resp);
 
         return ResponseEntity.ok(resp);
+    }
+
+    @PostMapping("/publicacion/mostrar_interes")
+    @ApiOperation( value = "Vincula un interesado a una publicación",
+            notes = "Se debe proporcionar el id de usuario y de publicación como JSON",
+            response = MostrarInteresResponse.class)
+    public ResponseEntity<MostrarInteresResponse> mostrarInteres(@RequestBody MostrarInteresRequest req) {
+        MostrarInteresResponse resp = servicio.mostrarInteres(req);
+        log.debug("Resulado de respuesta: {}", resp);
+        return ResponseEntity.ok(resp);
+    }
+
+
+    @GetMapping("/publicacion/interesados/{id}")
+    @ApiOperation( value = "Obtiene los interesados provisto el id de publicación",
+            notes = "Enviar por parámetros una ID de publicación que exista",
+            response = ObtenerInteresadosResponse.class)
+    public ResponseEntity<ObtenerInteresadosResponse> obtenerInteresadosId(@PathVariable Long id) {
+        ObtenerInteresadosResponse resp = servicio.obtenerInteresados(id);
+        log.debug("Resultado de respuesta: {} ", resp);
+        return ResponseEntity.ok(resp);
+
     }
 
 }

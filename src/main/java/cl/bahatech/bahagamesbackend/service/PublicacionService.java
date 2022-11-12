@@ -1,11 +1,9 @@
 package cl.bahatech.bahagamesbackend.service;
 
 import cl.bahatech.bahagamesbackend.model.Favorito;
+import cl.bahatech.bahagamesbackend.model.Interesado;
 import cl.bahatech.bahagamesbackend.model.Publicacion;
-import cl.bahatech.bahagamesbackend.model.request.AgregarCalificacionRequest;
-import cl.bahatech.bahagamesbackend.model.request.AgregarFavoritoRequest;
-import cl.bahatech.bahagamesbackend.model.request.AgregarPublicacionRequest;
-import cl.bahatech.bahagamesbackend.model.request.DeshabilitarPublicacionRequest;
+import cl.bahatech.bahagamesbackend.model.request.*;
 import cl.bahatech.bahagamesbackend.model.response.*;
 import cl.bahatech.bahagamesbackend.repository.PublicacionRepo;
 import cl.bahatech.bahagamesbackend.util.CustomRuntimeException;
@@ -24,7 +22,6 @@ public class PublicacionService {
         boolean resultado = repo.agregarPublicacion(req);
         return new AgregarPublicacionResponse();
     }
-
     public ObtenerPublicacionesResponse obtenerPublicaciones() {
 
         ObtenerPublicacionesResponse resp = new ObtenerPublicacionesResponse();
@@ -32,17 +29,14 @@ public class PublicacionService {
 
         return resp;
     }
-
     public DeshabilitarPublicacionResponse deshabilitarPublicacion(DeshabilitarPublicacionRequest req) {
         boolean resultado = repo.deshabilitarPublicacion(req);
         return new DeshabilitarPublicacionResponse();
     }
-
     public AgregarCalificacionResponse calificarPublicacion (AgregarCalificacionRequest req) {
         boolean resultado = repo.calificarPublicacion(req);
         return new AgregarCalificacionResponse();
     }
-
     public ObtenerPublicacionIdResponse obtenerPublicacionPorId(Long id) {
         ObtenerPublicacionIdResponse resp = new ObtenerPublicacionIdResponse();
 
@@ -55,12 +49,10 @@ public class PublicacionService {
         }
         return resp;
     }
-
     public AgregarFavoritoResponse agregarFavorito (AgregarFavoritoRequest req) {
         boolean resultado = repo.agregarFavorito(req);
         return new AgregarFavoritoResponse();
     }
-
     public ObtenerFavoritosResponse obtenerFavsUsuario(Long id) {
         ObtenerFavoritosResponse resp = new ObtenerFavoritosResponse();
 
@@ -68,11 +60,20 @@ public class PublicacionService {
         resp.setFavoritos(favs);
         return resp;
     }
-
     public EliminarFavoritoResponse eliminarFavorito(Long usuario, Long publicacion) {
         boolean resultado = repo.eliminarFavorito(usuario, publicacion);
         return new EliminarFavoritoResponse();
     }
+    public MostrarInteresResponse mostrarInteres (MostrarInteresRequest req) {
+        boolean resultado = repo.mostrarInteres(req);
+        return new MostrarInteresResponse();
+    }
+    public ObtenerInteresadosResponse obtenerInteresados(Long id) {
+        ObtenerInteresadosResponse resp = new ObtenerInteresadosResponse();
 
+        List<Interesado> ints = repo.obtenerInteresadosPublicacion(id);
+        resp.setInteresados(ints);
+        return resp;
+    }
 
 }

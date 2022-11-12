@@ -1,11 +1,9 @@
 package cl.bahatech.bahagamesbackend.repository;
 
 import cl.bahatech.bahagamesbackend.model.Favorito;
+import cl.bahatech.bahagamesbackend.model.Interesado;
 import cl.bahatech.bahagamesbackend.model.Publicacion;
-import cl.bahatech.bahagamesbackend.model.request.AgregarCalificacionRequest;
-import cl.bahatech.bahagamesbackend.model.request.AgregarFavoritoRequest;
-import cl.bahatech.bahagamesbackend.model.request.AgregarPublicacionRequest;
-import cl.bahatech.bahagamesbackend.model.request.DeshabilitarPublicacionRequest;
+import cl.bahatech.bahagamesbackend.model.request.*;
 import cl.bahatech.bahagamesbackend.util.Constante;
 import cl.bahatech.bahagamesbackend.util.CustomRuntimeException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -252,5 +250,69 @@ public class PublicacionRepo {
         }
     }
 
+    public boolean mostrarInteres(MostrarInteresRequest req) {
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+            //conn.setAutoCommit(false); Debe quedar asī para postgre en lectura de datos
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_MOSTRAR_INTERES + "(?,?)");
+            //Call sin curly braces para postgre
+
+            st.setLong(1, req.getUsuario());
+            st.setLong(2, req.getPublicacion());
+
+            st.execute();
+
+            conn.close();
+
+            return true;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
+
+    public List<Interesado> obtenerInteresadosPublicacion(Long id) {
+
+        List<Interesado> interesados = new ArrayList<>();
+        Interesado interesado = null;
+
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+            conn.setAutoCommit(false); //Debe quedar asī para postgre
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_OBTENER_INTERESADOS + "(?,?)");
+            //Call sin curly braces para postgre
+            st.setLong(1, id);
+            st.registerOutParameter(2, Types.REF_CURSOR);
+            st.execute();
+
+            ResultSet rs = (ResultSet) st.getObject(2);
+
+            while (rs.next()) {
+                interesado = new Interesado();
+
+                interesado.setIdInteresado(rs.getLong("id_interesado"));
+                interesado.setInteresado(rs.getString("interesado"));
+                interesado.setIdVendedor(rs.getLong("id_vendedor"));
+                interesado.setVendedor(rs.getString("vendedor"));
+                interesado.setIdPublicacion(rs.getLong("id_publicacion"));
+                interesado.setPublicacion(rs.getString("publicacion"));
+                interesado.setFechaPublicacion(rs.getString("fecha_publicacion"));
+                interesado.setPrecio(rs.getInt("precio"));
+                interesado.setPlataforma(rs.getString("plataforma"));
+                interesado.setFormato(rs.getString("formato"));
+
+                interesados.add(interesado);
+            }
+
+            conn.close();
+
+            return interesados;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
 
 }
