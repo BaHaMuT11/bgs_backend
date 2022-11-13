@@ -294,6 +294,10 @@ public class PublicacionRepo {
 
                 interesado.setIdInteresado(rs.getLong("id_interesado"));
                 interesado.setInteresado(rs.getString("interesado"));
+                interesado.setCorreoInteresado(rs.getString("correo_interesado"));
+                interesado.setFonoInteresado(rs.getString("fono_interesado"));
+                interesado.setComunaInteresado(rs.getString("comuna_interesado"));
+                interesado.setRegionInteresado(rs.getString("region_interesado"));
                 interesado.setIdVendedor(rs.getLong("id_vendedor"));
                 interesado.setVendedor(rs.getString("vendedor"));
                 interesado.setIdPublicacion(rs.getLong("id_publicacion"));

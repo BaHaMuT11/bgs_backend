@@ -6,6 +6,10 @@ import lombok.Data;
 public class Interesado {
     private Long idInteresado;
     private String interesado;
+    private String correoInteresado;
+    private String fonoInteresado;
+    private String regionInteresado;
+    private String comunaInteresado;
     private Long idVendedor;
     private String vendedor;
     private Long idPublicacion;
