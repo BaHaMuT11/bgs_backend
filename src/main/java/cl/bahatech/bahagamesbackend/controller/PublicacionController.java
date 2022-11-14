@@ -136,4 +136,27 @@ public class PublicacionController {
 
     }
 
+
+    @PutMapping("/interesados/cerrar")
+    @ApiOperation( value = "Cierra una venta",
+            notes = "Se debe proporcionar info de publicación e interesado como JSON",
+            response = CerrarVentaResponse.class)
+    public ResponseEntity<CerrarVentaResponse> cerrarVenta(@RequestBody CerrarVentaRequest req) {
+        CerrarVentaResponse resp = servicio.cerrarVenta(req);
+        log.debug("Resulado de respuesta: {}", resp);
+        return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping("/ganador/{id}")
+    @ApiOperation( value = "Obtiene el ganador de una publicación",
+            notes = "Enviar por parámetros una ID de publicación que exista",
+            response = ObtenerGanadorResponse.class)
+    public ResponseEntity<ObtenerGanadorResponse> obtenerGanador(@PathVariable Long id) {
+
+        ObtenerGanadorResponse resp = servicio.obtenerGanador(id);
+        log.debug("Resultado de respuesta: {} ", resp);
+        return ResponseEntity.ok(resp);
+
+    }
+
 }

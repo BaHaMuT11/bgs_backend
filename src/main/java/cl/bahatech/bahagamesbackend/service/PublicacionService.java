@@ -1,6 +1,7 @@
 package cl.bahatech.bahagamesbackend.service;
 
 import cl.bahatech.bahagamesbackend.model.Favorito;
+import cl.bahatech.bahagamesbackend.model.Ganador;
 import cl.bahatech.bahagamesbackend.model.Interesado;
 import cl.bahatech.bahagamesbackend.model.Publicacion;
 import cl.bahatech.bahagamesbackend.model.request.*;
@@ -73,6 +74,18 @@ public class PublicacionService {
 
         List<Interesado> ints = repo.obtenerInteresadosPublicacion(id);
         resp.setInteresados(ints);
+        return resp;
+    }
+    public CerrarVentaResponse cerrarVenta(CerrarVentaRequest req) {
+        boolean resultado = repo.cerrarVenta(req);
+        return new CerrarVentaResponse();
+    }
+    public ObtenerGanadorResponse obtenerGanador(Long id) {
+        ObtenerGanadorResponse resp = new ObtenerGanadorResponse();
+
+        Ganador ganador = repo.obtenerGanador(id);
+        resp.setGanador(ganador);
+
         return resp;
     }
 

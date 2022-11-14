@@ -1,6 +1,7 @@
 package cl.bahatech.bahagamesbackend.repository;
 
 import cl.bahatech.bahagamesbackend.model.Favorito;
+import cl.bahatech.bahagamesbackend.model.Ganador;
 import cl.bahatech.bahagamesbackend.model.Interesado;
 import cl.bahatech.bahagamesbackend.model.Publicacion;
 import cl.bahatech.bahagamesbackend.model.request.*;
@@ -46,7 +47,6 @@ public class PublicacionRepo {
             throw new CustomRuntimeException(e);
         }
     }
-
     public List<Publicacion> obtenerPublicaciones() {
 
         Publicacion publicacion;
@@ -319,4 +319,58 @@ public class PublicacionRepo {
         }
     }
 
+    public boolean cerrarVenta(CerrarVentaRequest req) {
+
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_CERRAR_VENTA + "(?,?)");
+
+            st.setLong(1, req.getPublicacion());
+            st.setLong(2, req.getUsuario());
+
+            st.execute();
+            conn.close();
+
+            return true;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
+
+    public Ganador obtenerGanador(Long id) {
+
+        Ganador ganador = null;
+
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+            conn.setAutoCommit(false); //Debe quedar asī para postgre
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_OBTENER_GANADOR+ "(?,?)");
+            //Call sin curly braces para postgre
+            st.setLong(1, id);
+            st.registerOutParameter(2, Types.REF_CURSOR);
+            st.execute();
+
+            ResultSet rs = (ResultSet) st.getObject(2);
+
+            while (rs.next()) {
+                ganador = new Ganador();
+
+                ganador.setIdUsuario(rs.getLong("id_usuario"));
+                ganador.setNombre(rs.getString("nombre"));
+                ganador.setEsGanador(rs.getBoolean("ganador"));
+                ganador.setFechaCompra(rs.getString("fecha_compra"));
+                ganador.setPublicacion(rs.getLong("publicacion"));
+            }
+
+            conn.close();
+
+            return ganador;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
 }
