@@ -1,9 +1,6 @@
 package cl.bahatech.bahagamesbackend.repository;
 
-import cl.bahatech.bahagamesbackend.model.Favorito;
-import cl.bahatech.bahagamesbackend.model.Ganador;
-import cl.bahatech.bahagamesbackend.model.Interesado;
-import cl.bahatech.bahagamesbackend.model.Publicacion;
+import cl.bahatech.bahagamesbackend.model.*;
 import cl.bahatech.bahagamesbackend.model.request.*;
 import cl.bahatech.bahagamesbackend.util.Constante;
 import cl.bahatech.bahagamesbackend.util.CustomRuntimeException;
@@ -90,7 +87,6 @@ public class PublicacionRepo {
             throw new CustomRuntimeException(e);
         }
     }
-
     public boolean deshabilitarPublicacion(DeshabilitarPublicacionRequest req) {
 
         try {
@@ -109,7 +105,6 @@ public class PublicacionRepo {
             throw new CustomRuntimeException(e);
         }
     }
-
     public boolean calificarPublicacion(AgregarCalificacionRequest req) {
         try {
             Connection conn = jdbcTemplate.getDataSource().getConnection();
@@ -132,7 +127,6 @@ public class PublicacionRepo {
             throw new CustomRuntimeException(e);
         }
     }
-
     public Publicacion obtenerPublicacion(Long id) {
 
         Publicacion publicacion = null;
@@ -173,7 +167,6 @@ public class PublicacionRepo {
             throw new CustomRuntimeException(e);
         }
     }
-
     public boolean agregarFavorito(AgregarFavoritoRequest req) {
         try {
             Connection conn = jdbcTemplate.getDataSource().getConnection();
@@ -195,7 +188,6 @@ public class PublicacionRepo {
             throw new CustomRuntimeException(e);
         }
     }
-
     public List<Favorito> obtenerFavoritosUsuario(Long id) {
 
         List<Favorito> favoritos = new ArrayList<>();
@@ -232,7 +224,6 @@ public class PublicacionRepo {
             throw new CustomRuntimeException(e);
         }
     }
-
     public boolean eliminarFavorito(Long usuario, Long publicacion) {
         try {
             Connection conn = jdbcTemplate.getDataSource().getConnection();
@@ -249,7 +240,6 @@ public class PublicacionRepo {
             throw new CustomRuntimeException(e);
         }
     }
-
     public boolean mostrarInteres(MostrarInteresRequest req) {
         try {
             Connection conn = jdbcTemplate.getDataSource().getConnection();
@@ -271,7 +261,6 @@ public class PublicacionRepo {
             throw new CustomRuntimeException(e);
         }
     }
-
     public List<Interesado> obtenerInteresadosPublicacion(Long id) {
 
         List<Interesado> interesados = new ArrayList<>();
@@ -318,7 +307,6 @@ public class PublicacionRepo {
             throw new CustomRuntimeException(e);
         }
     }
-
     public boolean cerrarVenta(CerrarVentaRequest req) {
 
         try {
@@ -338,7 +326,6 @@ public class PublicacionRepo {
             throw new CustomRuntimeException(e);
         }
     }
-
     public Ganador obtenerGanador(Long id) {
 
         Ganador ganador = null;
@@ -368,6 +355,63 @@ public class PublicacionRepo {
             conn.close();
 
             return ganador;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
+    public boolean modificarPublicacion(ModificarPublicacionRequest req) {
+
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_MODIFICAR_PUBLICACION + "(?,?,?)");
+
+            st.setLong(1, req.getPublicacion());
+            st.setString(2, req.getPlataforma());
+            st.setString(3, req.getFormato());
+
+            st.execute();
+            conn.close();
+
+            return true;
+
+        } catch (SQLException e) {
+            throw new CustomRuntimeException(e);
+        }
+    }
+    public List<Adquisicion> obtenerAdquisicionesUsuario(Long id) {
+
+        List<Adquisicion> adquisiciones = new ArrayList<>();
+        Adquisicion adquisicion = null;
+
+        try {
+            Connection conn = jdbcTemplate.getDataSource().getConnection();
+            conn.setAutoCommit(false); //Debe quedar asī para postgre
+
+            CallableStatement st = conn.prepareCall("CALL " + Constante.SP_OBTENER_ADQUISICIONES + "(?,?)");
+            //Call sin curly braces para postgre
+            st.setLong(1, id);
+            st.registerOutParameter(2, Types.REF_CURSOR);
+            st.execute();
+
+            ResultSet rs = (ResultSet) st.getObject(2);
+
+            while (rs.next()) {
+                adquisicion = new Adquisicion();
+
+                adquisicion.setIdPublicacion(rs.getLong("id_publicacion"));
+                adquisicion.setJuego(rs.getString("juego"));
+                adquisicion.setFechaCompra(rs.getString("fecha_compra"));
+                adquisicion.setVendedor(rs.getString("vendedor"));
+                adquisicion.setComprador(rs.getString("comprador"));
+
+                adquisiciones.add(adquisicion);
+            }
+
+            conn.close();
+
+            return adquisiciones;
 
         } catch (SQLException e) {
             throw new CustomRuntimeException(e);

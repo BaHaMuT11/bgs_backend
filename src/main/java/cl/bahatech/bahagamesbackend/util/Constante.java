@@ -21,9 +21,11 @@ public final class Constante {
     public static final String SP_ELIMINAR_FAVORTIO_USUARIO = "baha_games_store.sp_eliminar_favorito";
     public static final String SP_MOSTRAR_INTERES = "baha_games_store.sp_mostrar_interes";
     public static final String SP_OBTENER_INTERESADOS = "baha_games_store.sp_obtener_interesados_publicacion";
-
     public static final String SP_CERRAR_VENTA = "baha_games_store.sp_cerrar_venta";
-
     public static final String SP_OBTENER_GANADOR = "baha_games_store.sp_obtener_ganador";
+
+    public static final String SP_OBTENER_ADQUISICIONES = "baha_games_store.sp_obtener_adquisiciones";
+
+    public static final String SP_MODIFICAR_PUBLICACION = "baha_games_store.sp_modificar_publicacion";
 
 }

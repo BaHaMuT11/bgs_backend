@@ -1,9 +1,6 @@
 package cl.bahatech.bahagamesbackend.service;
 
-import cl.bahatech.bahagamesbackend.model.Favorito;
-import cl.bahatech.bahagamesbackend.model.Ganador;
-import cl.bahatech.bahagamesbackend.model.Interesado;
-import cl.bahatech.bahagamesbackend.model.Publicacion;
+import cl.bahatech.bahagamesbackend.model.*;
 import cl.bahatech.bahagamesbackend.model.request.*;
 import cl.bahatech.bahagamesbackend.model.response.*;
 import cl.bahatech.bahagamesbackend.repository.PublicacionRepo;
@@ -88,5 +85,15 @@ public class PublicacionService {
 
         return resp;
     }
+    public ModificarPublicacionResponse modificarPublicacion(ModificarPublicacionRequest req) {
+        boolean resultado = repo.modificarPublicacion(req);
+        return new ModificarPublicacionResponse();
+    }
+    public ObtenerAdquisicionesResponse obtenerAdquisicones(Long id) {
+        ObtenerAdquisicionesResponse resp = new ObtenerAdquisicionesResponse();
 
+        List<Adquisicion> adqs = repo.obtenerAdquisicionesUsuario(id);
+        resp.setAdquisiciones(adqs);
+        return resp;
+    }
 }

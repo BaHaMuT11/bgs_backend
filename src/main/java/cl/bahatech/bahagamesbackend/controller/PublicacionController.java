@@ -159,4 +159,26 @@ public class PublicacionController {
 
     }
 
+    @PutMapping("/item/modificar")
+    @ApiOperation( value = "Modifica info de una publicación",
+            notes = "Se debe proporcionar info de la publicación como JSON",
+            response = ModificarPublicacionResponse.class)
+    public ResponseEntity<ModificarPublicacionResponse> modificarItem(@RequestBody ModificarPublicacionRequest req) {
+        ModificarPublicacionResponse resp = servicio.modificarPublicacion(req);
+        log.debug("Resulado de respuesta: {}", resp);
+        return ResponseEntity.ok(resp);
+    }
+
+
+    @GetMapping("/publicacion/adquisiciones/{id}")
+    @ApiOperation( value = "Obtiene las adquisiciones provisto un id de usuario",
+            notes = "Enviar por parámetros una ID de usuario que exista",
+            response = ObtenerAdquisicionesResponse.class)
+    public ResponseEntity<ObtenerAdquisicionesResponse> obtenerAdquisicionesUsuario(@PathVariable Long id) {
+        ObtenerAdquisicionesResponse resp = servicio.obtenerAdquisicones(id);
+        log.debug("Resultado de respuesta: {} ", resp);
+        return ResponseEntity.ok(resp);
+
+    }
+
 }
