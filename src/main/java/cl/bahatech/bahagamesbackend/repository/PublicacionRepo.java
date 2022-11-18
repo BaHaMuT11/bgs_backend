@@ -212,6 +212,7 @@ public class PublicacionRepo {
                 favorito.setPublicacion(rs.getLong("publicacion"));
                 favorito.setImagen(rs.getString("imagen"));
                 favorito.setJuego(rs.getString("juego"));
+                favorito.setEstado(rs.getString("estado"));
 
                 favoritos.add(favorito);
             }

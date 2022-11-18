@@ -8,4 +8,5 @@ public class Favorito {
     private Long publicacion;
     private String juego;
     private String imagen;
+    private String estado;
 }
