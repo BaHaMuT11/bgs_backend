@@ -23,20 +23,6 @@ public class ServiceConfig {
     private String pass;
 
     @Bean
-    public WebMvcConfigurer corsConfigure() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("*")
-                        .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
-                        .allowCredentials(false)
-                        .maxAge(4800);
-            }
-        };
-    }
-
-    @Bean
     public Log4jListener executeLog4jListener() {
         return new Log4jListener();
     }
